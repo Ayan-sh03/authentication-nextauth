@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  role       String   @default("user") @db.VarChar(255)
+  firstName  String   @map("first_name") @db.VarChar(255)
+  middleName String?  @map("middle_name") @db.VarChar(255)
+  lastName   String   @map("last_name") @db.VarChar(255)
+  // Profile    Profile?
+  IsApproved Boolean  @default(false) @map("is_approved")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("users")
+}
+
+// model Profile {
+//   id             String @id @default(uuid())
+//   userId         String @unique @map("user_id")
+//   user           User   @relation(fields: [userId], references: [id])
+//   graduationYear String @db.VarChar(4) @map("graduation_year")
+//   placeOfWork    String @db.VarChar(255) @map("place_of_work")
+//   AreaOfWork String @db.VarChar(255) @map("area_of_work")
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+// }
